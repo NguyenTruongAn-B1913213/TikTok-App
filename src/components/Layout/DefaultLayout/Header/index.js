@@ -1,11 +1,24 @@
 import styles from './Header.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Tippy from '@tippyjs/react/headless';
+import PopperWrapper from '../../../Popper/Wrapper';
+import AccountItem from '../../../AccountItem/index';
+
 import {
     faCircleXmark,
     faSpinner,
     faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from 'react';
+import Button from '../../../Button/index';
 function Header() {
+    const [searchResult, setSearchResult] = useState([]);
+    useEffect(() => {
+        setTimeout(() => {
+            setSearchResult([]);
+        }, 0);
+        return;
+    }, []);
     return (
         <header className={styles.wapper}>
             <div className={styles.inner}>
@@ -51,20 +64,47 @@ function Header() {
                         ></path>
                     </svg>
                 </div>
-                <div className={styles.search}>
-                    <input placeholder=" Search accounts and video" />
-                    <button className={styles.clear}>
-                        <FontAwesomeIcon icon={faCircleXmark} />
-                    </button>
-                    {/* <FontAwesomeIcon
-                        className={styles.loading}
-                        icon={faSpinner}
-                    /> */}
-                    <button className={styles.searchBtn}>
-                        <FontAwesomeIcon icon={faMagnifyingGlass} />
-                    </button>
+                <Tippy
+                    interactive
+                    visible={searchResult.length > 0}
+                    render={(attrs) => (
+                        <div
+                            className={styles.searchResult}
+                            tabIndex="-1"
+                            {...attrs}
+                        >
+                            <PopperWrapper>
+                                <h4 className={styles.searchTitle}> Acounts</h4>
+                                <AccountItem />
+                                <AccountItem /> <AccountItem />
+                            </PopperWrapper>
+                        </div>
+                    )}
+                >
+                    <div className={styles.search}>
+                        <input placeholder=" Search accounts and video" />
+                        <button className={styles.clear}>
+                            <FontAwesomeIcon icon={faCircleXmark} />
+                        </button>
+                        <FontAwesomeIcon
+                            className={styles.loading}
+                            icon={faSpinner}
+                        />
+
+                        <button className={styles.searchBtn}>
+                            <FontAwesomeIcon icon={faMagnifyingGlass} />
+                        </button>
+                    </div>
+                </Tippy>
+                <div className={styles.actions}>
+                    <Button
+                        primary
+                        // to="/login"
+                        onClick={() => alert('ádnjasdbsa')}
+                    >
+                        Login
+                    </Button>
                 </div>
-                <div className={styles.actions}></div>
             </div>
         </header>
     );
